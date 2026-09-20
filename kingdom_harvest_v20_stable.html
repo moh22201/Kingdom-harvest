@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Kingdom Harvest</title>
+<script src="https://telegram.org/js/telegram-web-app.js?63"></script>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:#071019;color:#f7f7f7;font-family:Arial,sans-serif;user-select:none}
+.app{max-width:760px;margin:auto;min-height:100vh;background:#111c27;overflow:hidden}.top{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;gap:5px;padding:9px;background:#101a25f5;border-bottom:1px solid #fff2}.brand{font-weight:900;color:#e8c25a;font-size:14px}.stats{display:flex;gap:4px}.pill{background:#202e3d;border:1px solid #fff2;padding:6px 7px;border-radius:11px;font-size:11px;font-weight:900}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:7px;background:#0b141e;position:sticky;top:51px;z-index:29}.nav button{border:0;padding:9px 3px;border-radius:11px;background:#1b2836;color:#dce3ea;font-weight:900;font-size:12px}.nav button.active{background:#8c6827;color:#fff}
+.screen{display:none;padding:9px}.screen.active{display:block}.hero{border-radius:18px;padding:13px;background:linear-gradient(135deg,#263d31,#162535);border:1px solid #fff2;margin-bottom:8px}.hero h2{margin:0 0 5px;font-size:19px}.muted{color:#a7b1bc;font-size:11px;line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.action{padding:10px;border:0;border-radius:12px;color:#fff;font-weight:900;background:#28573d}.gold{background:#8a6523}.blue{background:#28536c}
+.map{position:relative;min-height:570px;border-radius:23px;overflow:hidden;background:linear-gradient(#91bf70 0 48%,#789f5a 48%);border:2px solid #fff1}.roadH{position:absolute;left:0;right:0;top:53%;height:67px;background:#bca477}.roadV{position:absolute;top:0;bottom:0;left:47%;width:58px;background:#bca477}
+.house{position:absolute;top:24px;right:20px;text-align:center}.houseArt{font-size:52px}.market{position:absolute;top:27px;left:20px;text-align:center}.marketArt{font-size:51px}.label{display:block;background:#583b2a;border-radius:8px;padding:4px 6px;font-size:10px;font-weight:900}
+.field{position:absolute;top:137px;left:50%;transform:translateX(-50%);width:min(350px,91%);display:grid;grid-template-columns:repeat(6,1fr);gap:0;border-radius:17px;overflow:hidden;background:#805a35;border:8px solid #68482e;box-shadow:0 14px 32px #20391755}.plot{height:56px;border:0;outline:1px solid #765131;background:linear-gradient(#9a7145,#88613c);display:flex;align-items:center;justify-content:center;font-size:25px;position:relative}.plot.watered{background:linear-gradient(#71975d,#5b7e4d)}.plot.ready{background:linear-gradient(#7ba55b,#608349);animation:ready 1.1s infinite}.plot span{position:absolute;bottom:2px;font-size:8px;background:#13201ddd;border-radius:7px;padding:2px 4px}@keyframes ready{50%{filter:brightness(1.2)}}
+.seedbar{margin-top:8px;background:#14212c;border:1px solid #fff2;border-radius:16px;padding:8px}.seedTitle{font-weight:900;font-size:12px;margin-bottom:6px}.seeds{display:flex;gap:5px;overflow-x:auto}.growthHint{font-size:12px;font-weight:800;opacity:.9;margin:4px 0 7px;text-align:center}.seed em{display:block;font-style:normal;font-size:10px;opacity:.85;margin-top:2px}.seed{min-width:64px;padding:7px 5px;border:1px solid #fff2;border-radius:11px;background:#1d2b38;color:#fff;text-align:center;font-weight:900}.seed.selected{background:#8a6524}.seed.lock{opacity:.35}.seed b{display:block;font-size:20px}.seed small{font-size:9px}
+.waterZone{position:absolute;bottom:19px;right:17px;text-align:center}.well{width:86px;height:57px;position:relative;margin:auto}.wellBase{position:absolute;left:9px;right:9px;bottom:0;height:30px;border-radius:10px 10px 15px 15px;background:repeating-linear-gradient(0deg,#6d6860 0 7px,#858077 7px 12px);border:3px solid #504c47}.wellTop{position:absolute;left:0;right:0;top:3px;height:24px;border-radius:50%;background:#4b4b49;border:5px solid #716d66}.roof{position:absolute;left:7px;right:7px;top:-7px;height:9px;background:#5a4537;border-radius:7px;transform:skewX(-20deg)}.handle{position:absolute;top:5px;right:17px;width:4px;height:28px;background:#4a3326;transform-origin:top;animation:pump 1.5s ease-in-out infinite}.wheel{position:absolute;top:3px;left:12px;width:22px;height:22px;border:4px solid #4b382b;border-radius:50%;animation:spin 2s linear infinite}.water{position:absolute;left:39px;top:25px;width:7px;height:17px;background:#72b9df;border-radius:9px;opacity:.0}.well.active .water{animation:flow .7s infinite}.well.active .handle{animation-duration:.45s}@keyframes pump{50%{transform:rotate(22deg)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes flow{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(13px)}}
+.worker{position:absolute;bottom:22px;left:18px;text-align:center;font-size:36px;transition:.6s;z-index:8}.worker.moving{animation:walk .35s infinite alternate}@keyframes walk{to{transform:translateY(-4px) rotate(3deg)}}
+.status{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:7px}.mini{background:#14212c;border-radius:11px;padding:7px;text-align:center;font-size:10px}.mini b{display:block;font-size:14px;color:#e5c05b}
+.card{background:#172431;border:1px solid #fff2;border-radius:16px;padding:10px}.upgradeGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:7px}.upgradeGrid button{padding:8px 3px;border:0;border-radius:10px;background:#294657;color:#fff;font-weight:900;font-size:10px}
+.marketRow{padding:10px 2px;border-bottom:1px solid #fff1}.marketRow:last-child{border:0}.qty{display:grid;grid-template-columns:58px 1fr 58px 1fr;gap:5px;margin-top:6px}.qty input{width:100%;border:1px solid #fff2;background:#0b131b;color:#fff;border-radius:8px;padding:8px;text-align:center}.qty button{border:0;border-radius:8px;background:#345f43;color:#fff;font-weight:900;font-size:11px}
+.arena{height:555px;border-radius:22px;position:relative;overflow:hidden;background:linear-gradient(#879d68 0 42%,#3f7285 42% 58%,#879d68 58%);border:1px solid #fff2}.bridge{position:absolute;top:46%;left:0;right:0;height:55px;background:repeating-linear-gradient(90deg,#6d5035 0 29px,#896746 29px 58px);border-block:4px solid #4e3b2b}.tower{position:absolute;width:67px;height:75px;border-radius:12px;background:#263744;border:4px solid #d5b65e;text-align:center;padding-top:14px;font-size:30px;z-index:3}.tower small{display:block;font-size:8px}.e1{top:17px;right:27px}.e2{top:17px;left:27px}.m1{bottom:17px;right:27px}.m2{bottom:17px;left:27px}.arenaTop{position:absolute;z-index:5;top:8px;left:8px;right:8px;display:flex;justify-content:space-between}.timer,.energy{background:#0d1721dd;padding:8px 11px;border-radius:12px;font-weight:900}.timer{font-size:19px}.battleMsg{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);background:#0d1721dd;border-radius:13px;padding:9px 13px;font-weight:900;z-index:5;white-space:nowrap}.deck{position:absolute;bottom:7px;left:7px;right:7px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;z-index:6}.heroCard{background:#172330ee;border:1px solid #fff2;border-radius:12px;padding:6px;text-align:center;font-size:10px}.heroCard b{display:block;font-size:19px}.heroCard button{width:100%;border:0;border-radius:8px;background:#8b6727;color:#fff;font-weight:900;padding:5px;margin-top:4px}.arenaBtns{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}.arenaBtns button{border:0;border-radius:11px;padding:11px;background:#27536c;color:#fff;font-weight:900}
+.heroGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.heroUnit{background:#172330;border:1px solid #fff1;border-radius:15px;padding:10px}.face{font-size:38px}.bar{height:6px;background:#0a1118;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:#d0ac4d}.toast{position:fixed;z-index:100;bottom:18px;left:50%;transform:translate(-50%,25px);opacity:0;background:#101b27;border:1px solid #fff2;border-radius:12px;padding:10px 14px;font-weight:900;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}.coming{text-align:center;padding:28px 16px}.comingArt{font-size:64px;margin:28px 0;filter:drop-shadow(0 8px 8px #0005)}
+@media(max-width:430px){.field{width:322px}.plot{height:53px}.map{min-height:565px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand">👑 KINGDOM HARVEST</div><div class="stats"><span class="pill">🪙 <b id="coins">10.00</b></span><span class="pill">⭐ <b id="stars">0</b></span><span class="pill">🏆 <b id="trophies">0</b></span></div></header>
+<nav class="nav"><button class="active" onclick="show('farm',this)">🌾 المزرعة</button><button onclick="show('market',this)">🛒 السوق</button><button onclick="show('arena',this)">⚔️ Arena</button><button onclick="show('heroes',this)">🛡️ الأبطال</button></nav>
+
+<section id="farm" class="screen active">
+<div class="hero"><h2>🌾 مملكتك الزراعية</h2><div class="muted">اختر البذرة من الشريط ثم اضغط على أي مربع فارغ للزراعة. لا تحتاج إلى كتابة اسم أي منتوج.</div>
+<div class="actions"><button class="action gold" onclick="dailyGift()">🎁 الهدية اليومية <span id="giftState">+1 🌻</span></button><button class="action blue" onclick="upgradeFarmer()">⬆️ المزارع <span id="farmerLv">Lv.1</span></button></div></div>
+<div class="map">
+<div class="house"><div class="houseArt">🏠</div><span class="label">بيت المزارع</span></div><div class="market"><div class="marketArt">🏪</div><span class="label">السوق</span></div><div class="roadH"></div><div class="roadV"></div>
+<div class="field" id="field"></div>
+<div class="waterZone"><div class="well" id="well"><div class="wellTop"></div><div class="wellBase"></div><div class="roof"></div><div class="wheel"></div><div class="handle"></div><div class="water"></div></div><span class="label">البئر الحجري Lv.<b id="wellLv">1</b></span></div>
+<div class="worker" id="worker">👷<span class="label">ساقي الماء Lv.<b id="waterLv">1</b></span></div>
+</div>
+<div class="seedbar"><div class="seedTitle">🌱 اختر البذرة للزراعة</div><div class="seeds" id="seeds"></div></div>
+<div class="status"><div class="mini">🌱 مزروع<b id="planted">0</b></div><div class="mini">💧 مسقي<b id="watered">0</b></div><div class="mini">🌾 جاهز<b id="ready">0</b></div></div>
+<div class="card" style="margin-top:7px"><b>💧 تطوير الماء</b><div class="muted">السقي يبدأ النمو. البئر والساقي يرفعان سرعة النمو.</div><div class="upgradeGrid"><button onclick="upgradeWell()">🪨 البئر<br>100 → 10K</button><button onclick="upgradeWater()">👷 الساقي<br>100 → 10K</button><button onclick="upgradeFarmer()">🌾 المزارع<br>100 → 10K</button></div></div>
+</section>
+
+<section id="market" class="screen"><div class="hero"><h2>🛒 السوق الملكي</h2><div class="muted">اكتب أي كمية تريد شراءها أو بيعها.</div></div><div class="card" id="marketRows"></div></section>
+
+<section id="arena" class="screen">
+<div class="hero coming">
+<h2>⚔️ Arena — Coming Soon</h2>
+<div class="muted">الأرينا قادمة لاحقًا. نركز الآن على بناء المزرعة والسوق والسقي وتجربة اللعبة داخل Telegram.</div>
+<div class="comingArt">🏰⚔️🏰</div>
+<div class="muted" style="text-align:center">سنضيف المعارك والـPvP بعد تثبيت أساس اللعبة.</div>
+</div>
+</section>
+
+<section id="heroes" class="screen"><div class="hero"><h2>🛡️ أبطال المملكة</h2><div class="muted">أبطال أصليون لكل واحد أسلوب مختلف.</div></div><div class="heroGrid"><div class="heroUnit"><div class="face">🛡️</div><b>Brak — الحارس</b><p class="muted">720 HP • 78 DMG • دفاع</p><div class="bar"><i style="width:82%"></i></div></div><div class="heroUnit"><div class="face">🏹</div><b>Lyra — الرامية</b><p class="muted">390 HP • 105 DMG • سرعة</p><div class="bar"><i style="width:60%"></i></div></div><div class="heroUnit"><div class="face">⚔️</div><b>Rayan — المقاتل</b><p class="muted">540 HP • 120 DMG • توازن</p><div class="bar"><i style="width:70%"></i></div></div><div class="heroUnit"><div class="face">🔮</div><b>Zara — الساحرة</b><p class="muted">330 HP • 150 DMG • ضرر</p><div class="bar"><i style="width:55%"></i></div></div><div class="heroUnit"><div class="face">🏹</div><b>Kael — الصياد</b><p class="muted">460 HP • 92 DMG • سريع</p><div class="bar"><i style="width:66%"></i></div></div><div class="heroUnit"><div class="face">🌑</div><b>Nox — الأسطوري</b><p class="muted">600 HP • 175 DMG • نادر</p><div class="bar"><i style="width:90%"></i></div></div></div></section>
+</div><div class="toast" id="toast"></div>
+
+<script>
+
+const BACKEND_DISABLED=true;
+
+function getTelegramInitData(){
+  try{
+    return (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) || "";
+  }catch(e){ return ""; }
+}
+
+function stateObject(){
+  return {coins,seeds,stock,farmerLv,wellLv,waterLv,giftUsed,giftDate,selected,plots};
+}
+
+// V20 Stable: gameplay persistence is local on this device/session.
+// Supabase sync is intentionally disabled until the server endpoint is repaired,
+// so no backend 400 can interrupt the game.
+async function backendLoad(){ return null; }
+async function backendSave(){ return null; }
+
+const crops=[
+{id:'sun',icon:'🌻',name:'عباد الشمس',seed:.05,price:.10,grow:300,prod:3,need:0},
+{id:'carrot',icon:'🥕',name:'الجزر',seed:.20,price:.35,grow:600,prod:3,need:100},
+{id:'potato',icon:'🥔',name:'البطاطا',seed:.50,price:.90,grow:900,prod:3,need:500},
+{id:'berry',icon:'🍓',name:'الفراولة',seed:.75,price:1.40,grow:1500,prod:4,need:1500},
+{id:'apple',icon:'🍎',name:'التفاح',seed:1.25,price:2.50,grow:2400,prod:4,need:3000},
+{id:'banana',icon:'🍌',name:'الموز',seed:2,price:4,grow:3600,prod:5,need:10000}];
+const todayKey=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const DEFAULT_STATE={coins:10,seeds:{sun:0,carrot:0,potato:0,berry:0,apple:0,banana:0},stock:{sun:0,carrot:0,potato:0,berry:0,apple:0,banana:0},farmerLv:1,wellLv:1,waterLv:1,giftUsed:false,selected:'sun',plots:Array(24).fill(null)};
+let coins=DEFAULT_STATE.coins,seeds={...DEFAULT_STATE.seeds},stock={...DEFAULT_STATE.stock};
+let farmerLv=1,wellLv=1,waterLv=1,giftUsed=false,giftDate='',selected='sun',plots=Array(24).fill(null);
+let battleRunning=false,timeLeft=180,energy=10,battleTimer=null,energyTimer=null;
+const $=x=>document.getElementById(x);function toast(m){let t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
+function loadState(){try{const raw=localStorage.getItem('kingdomHarvestState');if(!raw)return;const s=JSON.parse(raw);coins=Number.isFinite(s.coins)?s.coins:10;seeds={...DEFAULT_STATE.seeds,...(s.seeds||{})};stock={...DEFAULT_STATE.stock,...(s.stock||{})};farmerLv=s.farmerLv||1;wellLv=s.wellLv||1;waterLv=s.waterLv||1;giftUsed=!!s.giftUsed;giftDate=s.giftDate||'';if(giftDate!==todayKey())giftUsed=false;selected=s.selected||'sun';plots=Array.isArray(s.plots)?s.plots:Array(24).fill(null)}catch(e){console.warn(e)}}
+function saveState(){
+  try{localStorage.setItem('kingdomHarvestState',JSON.stringify(stateObject()))}catch(e){}
+}
+function telegramInit(){try{const tg=window.Telegram&&window.Telegram.WebApp;if(!tg)return;tg.ready();tg.expand();if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();document.body.classList.add('telegram');}catch(e){}}
+function show(id,b){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(id==='farm')renderField()}
+function dailyGift(){if(giftUsed){toast('🎁 الهدية مستلمة اليوم');return}giftUsed=true;giftDate=todayKey();seeds.sun++;$('giftState').textContent='تم ✓';selected='sun';renderSeeds();saveState();toast('🎁 +1 🌻 بذرة')}
+function buy(id,q){let c=crops.find(x=>x.id===id);q=Math.max(1,Math.floor(Number(q)||1));if(coins<c.seed*q){toast('🪙 العملات غير كافية');return}coins-=c.seed*q;seeds[id]+=q;saveState();toast('🛒 تم شراء '+q+' بذرة');update()}
+function sell(id,q){let c=crops.find(x=>x.id===id);q=Math.max(1,Math.floor(Number(q)||1));if(stock[id]<q){toast('🌾 الكمية غير كافية');return}stock[id]-=q;coins+=c.price*q;saveState();toast('💰 تم البيع');update()}
+function formatGrow(sec){sec=Math.max(0,Math.round(sec));if(sec<60)return sec+' ثانية';let m=Math.floor(sec/60),s2=sec%60;if(m<60)return m+' دقيقة'+(s2?' '+s2+' ث':'');let h=Math.floor(m/60),rm=m%60;return h+' ساعة'+(rm?' '+rm+' دقيقة':'')}
+function renderSeeds(){let b=$('seeds');b.innerHTML='';crops.forEach(c=>{let lock=c.need>0&&coins<c.need;let x=document.createElement('button');x.className='seed '+(selected===c.id?'selected ':'')+(lock?'lock':'');x.innerHTML='<b>'+c.icon+'</b><small>'+c.name+' • '+seeds[c.id]+'</small><em>⏱️ '+formatGrow(c.grow)+'</em>';x.disabled=lock;x.onclick=()=>{selected=c.id;renderSeeds();toast('تم اختيار '+c.name)};b.appendChild(x)})}
+function renderMarket(){let b=$('marketRows');b.innerHTML='';crops.forEach(c=>{let lock=c.need>0&&coins<c.need;let r=document.createElement('div');r.className='marketRow';r.innerHTML='<b>'+c.icon+' '+c.name+'</b><div class="muted">شراء البذرة '+c.seed.toFixed(2)+' 🪙 • بيع الوحدة '+c.price.toFixed(2)+' 🪙 • ⏱️ نمو '+formatGrow(c.grow)+' • بذور '+seeds[c.id]+' • محصول '+stock[c.id]+'</div>'+(lock?'<div style="color:#df967f;margin-top:5px;font-weight:900">🔒 يفتح عند '+c.need+' 🪙</div>':'<div class="qty"><input id="b'+c.id+'" type="number" min="1" value="1"><button onclick="buy(\''+c.id+'\',document.getElementById(\'b'+c.id+'\').value)">شراء</button><input id="s'+c.id+'" type="number" min="1" value="1"><button onclick="sell(\''+c.id+'\',document.getElementById(\'s'+c.id+'\').value)">بيع</button></div>');b.appendChild(r)})}
+function renderField(){let f=$('field');f.innerHTML='';plots.forEach((p,i)=>{let b=document.createElement('button');b.className='plot '+(p&&p.water?'watered ':'')+(p&&p.ready?'ready':'');if(!p){b.onclick=()=>plant(i)}else{let c=crops.find(x=>x.id===p.crop);b.innerHTML=c.icon+(p.ready?'<span>جاهز 🌾</span>':p.water?'<span>💧 ينمو • '+formatGrow(Math.max(0,p.end-Date.now()/1000))+'</span>':'<span>اسقِ 💧</span>');b.onclick=()=>plotAction(i)}f.appendChild(b)});stats()}
+function plant(i){if(!selected){toast('اختر بذرة أولاً');return}let c=crops.find(x=>x.id===selected);if(!c||coins<c.need){toast('هذا المحصول مقفل');return}if(seeds[selected]<=0){toast('🌱 لا توجد بذور — اشترِ من السوق');return}seeds[selected]--;plots[i]={crop:selected,water:false,ready:false,end:0};toast(c.icon+' تمت الزراعة — اضغط لسقيها');saveState();renderField();renderSeeds();renderMarket()}
+function plotAction(i){let p=plots[i],c=crops.find(x=>x.id===p.crop);if(p.ready){stock[p.crop]+=c.prod;plots[i]=null;toast('🌾 حصاد '+c.prod+' '+c.name);saveState();if(giftUsed)$('giftState').textContent='تم ✓';telegramInit();renderField();update();return}if(!p.water){p.water=true;let speed=1+(wellLv-1)*.20+(waterLv-1)*.25+(farmerLv-1)*.05;p.end=Date.now()/1000+c.grow/speed;saveState();animateWater(i);return}toast('⏱️ المحصول ينمو...')}
+function animateWater(i){$('well').classList.add('active');$('worker').classList.add('moving');let start=Date.now(),duration=850;let timer=setInterval(()=>{let q=Math.min(1,(Date.now()-start)/duration),x=18+(i%6)*53,y=150+Math.floor(i/6)*53;$('worker').style.left=(18+(x-18)*q)+'px';$('worker').style.bottom=(22+(570-y)*q)+'px';if(q>=1){clearInterval(timer);setTimeout(()=>{$('worker').classList.remove('moving');$('worker').style.left='18px';$('worker').style.bottom='22px';$('well').classList.remove('active')},450)}},30);toast('💧 الساقي يجلب الماء ويسقي الحقل');renderField()}
+function stats(){let p=plots.filter(Boolean),w=p.filter(x=>x.water),r=p.filter(x=>x.ready);$('planted').textContent=p.length;$('watered').textContent=w.length;$('ready').textContent=r.length}
+function update(){$('coins').textContent=coins.toFixed(2);$('farmerLv').textContent='Lv.'+farmerLv;$('wellLv').textContent=wellLv;$('waterLv').textContent=waterLv;renderSeeds();renderMarket();stats()}
+function upgradeCost(level){if(level>=30)return Infinity;return Math.round(100*Math.pow(100,(level-1)/29))}
+function upgradeFarmer(){let cost=upgradeCost(farmerLv);if(!Number.isFinite(cost)){toast('🏆 المزارع وصل Lv.30');return}if(coins<cost){toast('تحتاج '+cost+' 🪙');return}coins-=cost;farmerLv++;saveState();toast('🌾 تم تطوير المزارع إلى Lv.'+farmerLv);update()}
+function upgradeWell(){let cost=upgradeCost(wellLv);if(!Number.isFinite(cost)){toast('🏆 البئر وصل Lv.30');return}if(coins<cost){toast('تحتاج '+cost+' 🪙');return}coins-=cost;wellLv++;saveState();toast('🪨 تم تطوير البئر إلى Lv.'+wellLv);update()}
+function upgradeWater(){let cost=upgradeCost(waterLv);if(!Number.isFinite(cost)){toast('🏆 الساقي وصل Lv.30');return}if(coins<cost){toast('تحتاج '+cost+' 🪙');return}coins-=cost;waterLv++;saveState();toast('👷 تم تطوير الساقي إلى Lv.'+waterLv);update()}
+setInterval(()=>{let ch=false;plots.forEach(p=>{if(p&&p.water&&!p.ready&&Date.now()/1000>=p.end){p.ready=true;ch=true}});renderField();if(ch){saveState();update()}},1000);
+
+function startBattle(){if(battleRunning)return;battleRunning=true;timeLeft=180;energy=10;enemy1=1200;enemy2=900;$('startBattle').disabled=true;$('battleMsg').textContent='⚔️ بدأت المعركة!';$('timer').textContent='03:00';$('energy').textContent=10;clearInterval(battleTimer);clearInterval(energyTimer);battleTimer=setInterval(()=>{timeLeft--;let m=Math.floor(timeLeft/60),s=timeLeft%60;$('timer').textContent='0'+m+':'+String(s).padStart(2,'0');if(timeLeft<=0)endBattle(false)},1000);energyTimer=setInterval(()=>{energy=Math.min(10,energy+1);$('energy').textContent=energy},1500)}
+function deploy(name,cost,dmg){if(!battleRunning){toast('ابدأ المعركة');return}if(energy<cost){toast('⚡ الطاقة غير كافية');return}energy-=cost;enemy1=Math.max(0,enemy1-dmg);$('energy').textContent=energy;$('ehp1').textContent=enemy1+' HP';$('battleMsg').textContent='🔥 '+name+' هاجم -'+dmg;if(enemy1<=0){$('trophies').textContent=+$('trophies').textContent+30;endBattle(true)}}
+function endBattle(win){clearInterval(battleTimer);clearInterval(energyTimer);battleRunning=false;$('startBattle').disabled=false;$('battleMsg').textContent=win?'🏆 انتصار! +30 🏆':'⏱️ انتهى الوقت'}
+function resetBattle(){clearInterval(battleTimer);clearInterval(energyTimer);battleRunning=false;timeLeft=180;energy=10;enemy1=1200;$('timer').textContent='03:00';$('energy').textContent=10;$('ehp1').textContent='1200 HP';$('battleMsg').textContent='اضغط ابدأ المعركة';$('startBattle').disabled=false}
+loadState();if(giftUsed)$('giftState').textContent='تم ✓';telegramInit();renderField();update();
+</script>
+</body></html>
